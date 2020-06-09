@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    "rest_framework",
+
     "blog",
 ]
 
@@ -92,7 +95,6 @@ DATABASES = {
 CELERY_BROKER_URL = "amqp://{}:{}@rabbitmq_develops_today:{}//".format(
     os.environ["RABBITMQ_DEFAULT_USER"],
     os.environ["RABBITMQ_DEFAULT_PASS"],
-    # os.environ['RABBITMQ_DEFAULT_HOST'],
     os.environ["RABBITMQ_DEFAULT_PORT"],
 )
 
