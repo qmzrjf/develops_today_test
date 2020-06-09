@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from celery.schedules import crontab
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -83,10 +84,17 @@ DATABASES = {
         "PASSWORD": os.environ["POSTGRES_PASSWORD"],
         "HOST": os.environ["POSTGRES_HOST"],
         "PORT": os.environ["POSTGRES_PORT"],
-        "OPTIONS": {"connect_timeout": 5, },
+        "OPTIONS": {"connect_timeout": 5,},
     }
 }
 
+
+CELERY_BROKER_URL = "amqp://{}:{}@rabbitmq_develops_today:{}//".format(
+    os.environ["RABBITMQ_DEFAULT_USER"],
+    os.environ["RABBITMQ_DEFAULT_PASS"],
+    # os.environ['RABBITMQ_DEFAULT_HOST'],
+    os.environ["RABBITMQ_DEFAULT_PORT"],
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -95,9 +103,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
 
@@ -119,6 +127,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/static/"
+
+CELERY_BEAT_SCHEDULE = {
+    "upvote_clean": {
+        "task": "blog.tasks.upvote_clean",
+        "schedule": crontab(minute=0, hour=0),
+    }
+}
 
 try:
     from develops_today_test.settings_local import *  # noqa
