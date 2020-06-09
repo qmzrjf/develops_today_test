@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+
+  # wsgi
+  backend_develops_today:
+    build: .
+    command: python src/manage.py runserver 0:8000
+    container_name: backend_develops_today
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./:/srv/project
+    depends_on:
+      - rabbitmq_develops_today
+      - postgres_develops_today
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+
+  celery_develops_today:
+    build: .
+    command: /bin/bash ./commands/start_celery.sh
+    container_name: celery_develops_today
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq_develops_today
+      - postgres_develops_today
+    volumes:
+      - ./:/srv/project
+
+  celerybeat_develops_today:
+    build: .
+    command: celery -A develops_today_test beat -l info --workdir=/srv/project/src
+    container_name: celerybeat_develops_today
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq_develops_today
+      - postgres_develops_today
+    volumes:
+      - ./:/srv/project
+
+  rabbitmq_develops_today:
+    image: rabbitmq:3.8-rc-management-alpine
+    container_name: rabbitmq_develops_today
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "15672:15672"
+
+  postgres_develops_today:
+    image: postgres:11.3
+    container_name: postgres_develops_today
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
