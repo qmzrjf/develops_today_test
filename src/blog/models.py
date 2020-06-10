@@ -3,7 +3,7 @@ from django.db import models
 
 class Post(models.Model):
     title = models.CharField(max_length=120)
-    link = models.CharField(default="", max_length=120, null=True, blank=True)
+    link = models.URLField(max_length=200, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     votes = models.PositiveSmallIntegerField(default=0)
     author = models.CharField(max_length=120)

@@ -1,7 +1,7 @@
 from django.urls import path
 from blog.api.views import PostsView, PostView, CommentView, CommentsView, post_upvote
 
-app_name = 'api-currency'
+app_name = 'api-blog'
 urlpatterns = [
     path('posts/', PostsView.as_view(), name='posts'),
     path('posts/<int:pk>', PostView.as_view(), name='post'),

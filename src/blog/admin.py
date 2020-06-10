@@ -3,7 +3,7 @@ from blog.models import Post, Comment
 
 
 class PostAdmin(admin.ModelAdmin):
-    fields = ["title", "author", "votes"]
+    fields = ["title", "author", "votes", "link"]
 
 
 class CommentAdmin(admin.ModelAdmin):
