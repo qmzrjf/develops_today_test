@@ -77,7 +77,7 @@ def test_posts_and_comments():
 
     response_post = client.post(
         url_comments,
-        data={"post": 1, "content": "Nice post!", "author": "Kevin",},
+        data={"post": 1, "content": "Nice post!", "author": "Kevin"},
         format="json",
     )
     assert response_post.status_code == 201
@@ -101,7 +101,7 @@ def test_posts_and_comments():
 
     response_put = client.put(
         url_comment,
-        data={"post": 1, "content": "Like it!", "author": "John",},
+        data={"post": 1, "content": "Like it!", "author": "John"},
         format="json",
     )
 

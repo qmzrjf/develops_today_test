@@ -1,6 +1,6 @@
 from rest_framework import generics
 from django.db.models import F
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 
 from blog.api.serializers import PostSerializer, CommentSerializer
 from blog.models import Post, Comment
