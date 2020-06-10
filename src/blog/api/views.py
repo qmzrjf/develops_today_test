@@ -27,5 +27,5 @@ class CommentView(generics.RetrieveUpdateDestroyAPIView):
 
 
 def post_upvote(request, pk):
-    Post.objects.filter(id=pk).update(votes=F('votes')+1)
-    return HttpResponse('Votes was incremented')
+    Post.objects.filter(id=pk).update(votes=F("votes") + 1)
+    return HttpResponse("Votes was incremented")
